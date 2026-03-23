@@ -6,32 +6,28 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="439.0" prefWidth="847.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="474.0" prefWidth="847.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.orchester.Controller">
     <children>
-        <TableView layoutX="3.0" layoutY="81.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="1027.0">
+        <TableView fx:id="table" layoutX="3.0" layoutY="81.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="392.0" prefWidth="841.0">
             <columns>
-            <TableColumn prefWidth="138.0" text="Názov" />
-                <TableColumn prefWidth="119.0" text="Druh" />
-                <TableColumn prefWidth="96.0" text="Cena" />
-                <TableColumn minWidth="0.0" prefWidth="111.0" text="Pocet" />
-                <TableColumn prefWidth="119.0" text="Zvuk" />
-                <TableColumn minWidth="0.0" prefWidth="77.0" text="Klávesový nástroj">
-                    <columns>
-                        <TableColumn prefWidth="150.0" text="Počet klavies" />
-                    </columns>
-                </TableColumn>
-                <TableColumn minWidth="80.0" prefWidth="99.0" resizable="false" text="Rytmický nástroj">
-                    <columns>
-                        <TableColumn minWidth="20.0" prefWidth="150.0" text="Počet zvukov" />
-                    </columns>
-                </TableColumn>
-                <TableColumn prefWidth="136.0" text="Akcie" />
+                <TableColumn fx:id="colNazov" prefWidth="150.0" text="Názov" />
+                <TableColumn fx:id="colCena" minWidth="7.0" prefWidth="150.0" text="Cena" />
+                <TableColumn fx:id="colPocet" prefWidth="82.0" text="Počet" />
+                <TableColumn fx:id="colZvuk" minWidth="6.0" prefWidth="131.0" text="Zvuk" />
+                <TableColumn fx:id="colPocetKlavesov" minWidth="80.0" prefWidth="110.0" text="Počet klávesov" />
+                <TableColumn fx:id="colPocetZvukov" minWidth="8.0" prefWidth="110.0" text="Počet zvukov" />
+                <TableColumn fx:id="colAkcie" minWidth="0.0" prefWidth="64.0" text="Vymazať" />
+            <TableColumn fx:id="colAkcie1" minWidth="0.0" prefWidth="59.0" text="Upraviť" />
             </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
         </TableView>
-        <Text layoutX="194.0" layoutY="47.0" scaleX="5.0" scaleY="5.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Orchester" wrappingWidth="95.43359375" />
-        <Button layoutX="615.0" layoutY="45.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="112.0" text="Pridať nástroje" />
-        <Button layoutX="765.0" layoutY="15.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="118.0" text="Zahraj akord" />
-        <Button layoutX="615.0" layoutY="15.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="112.0" text="Sklad hraj" />
-        <Button layoutX="765.0" layoutY="45.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="118.0" text="Cena skladu" />
+        <Button layoutX="287.0" layoutY="37.0" mnemonicParsing="false" onAction="#pridajNastroj" prefHeight="25.0" prefWidth="107.0" text="Pridať nástroj" />
+        <Text layoutX="108.0" layoutY="49.0" scaleX="5.0" scaleY="5.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Orchester" wrappingWidth="52.43359375" />
+        <Button layoutX="415.0" layoutY="37.0" mnemonicParsing="false" onAction="#skladHraj" prefHeight="25.0" prefWidth="86.0" text="Sklad hraj" />
+        <Button layoutX="624.0" layoutY="37.0" mnemonicParsing="false" onAction="#nacitaj" prefHeight="25.0" prefWidth="140.0" text="Databáza nástrojov" />
+        <Button layoutX="524.0" layoutY="37.0" mnemonicParsing="false" onAction="#cenaSkladu" text="Cena skladu" />
+      <Button layoutX="781.0" layoutY="37.0" mnemonicParsing="false" onAction="#nacitaj" prefHeight="25.0" prefWidth="63.0" text="Uložiť" />
     </children>
 </AnchorPane>
