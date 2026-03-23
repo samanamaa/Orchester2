@@ -2,8 +2,8 @@ package com.example.orchester;
 
 public class KlavesovyNastroj extends Nastroj{
     int pocetKlavesov;
-    public KlavesovyNastroj(String druh,double cena,int pocet,int klavesy){
-        super(druh,cena,pocet,"ting");
+    public KlavesovyNastroj(String nazov,double cena,int pocet, String zvuk, int klavesy){
+        super(nazov,cena,pocet,zvuk);
         this.pocetKlavesov=klavesy;
     }
 }

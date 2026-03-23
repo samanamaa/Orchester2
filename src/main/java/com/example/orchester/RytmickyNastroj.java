@@ -2,8 +2,8 @@ package com.example.orchester;
 
 public class RytmickyNastroj extends Nastroj{
     int pocetZvukov;
-    public RytmickyNastroj(String druh,double cena,int pocet,int zvuky){
-        super(druh,cena,pocet,"bum");
+    public RytmickyNastroj(String nazov,double cena,int pocet, String zvuk, int zvuky){
+        super(nazov,cena,pocet,zvuk);
         this.pocetZvukov=zvuky;
     }
 }
