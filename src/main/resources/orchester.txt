@@ -1,0 +1,31 @@
+S,husle,2000,tidli-daj,2,4,GDAE,1.husle
+S,husle,1500,tidli-tidli,3,4,GDAE,2.husle
+S,viola,1800,brum-brum,1,4,CDAE,viola
+S,violoncelo,2200,doom-doom,2,4,CGDA,violoncelo
+S,kontrabas,2600,dum-dum,1,4,ADGC,kontrabas
+s,gitara akusticka,500,brnk-brnk-brnk,2,6,EADGBE
+s,gitara elektricka,1200,brnc-brnc,1,6,EADGBE
+s,basgitara,1300,bum-bum,1,4,ADGC
+s,harfa,3500,pling-pling,1,47,Cdur
+d,saxofon,4500,turururaa,2,21,A
+d,priecna flauta,900,fiii,3,16,C
+d,klarinet,1100,tru-lu-lu,2,17,B
+r,bicie,1500,bum-prask,1,9
+r,kajon,400,bok-bok,2,5
+r,xylofon,800,tik-tak,1,37
+k,organ,5000,huuum,1,61
+k,klavir,4200,plink-plonk,1,88
+k,klavesy,2500,synth-wave,2,61
+u,Jozko,Pucik,2.husle,200
+u,Misko,Gulocka,1.husle,300
+u,Ferko,Motuzik,3.husle,150
+u,Janko,Hrasko,harfa,250
+u,Marián,Varga,organ,300
+u,Martin,Valihora,bicie,234.80
+u,Zuzana,Hronska,priecna flauta,180
+u,Lenka,Kovacova,klavir,275
+u,Peter,Novotny,klarinet,190
+u,Andrej,Polak,gitara akusticka,210
+u,Ema,Horvathova,basgitara,205
+u,Tamara,Svecova,viola,195
+
