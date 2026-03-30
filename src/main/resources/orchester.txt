@@ -1,7 +1,6 @@
-r,bicie,1500,bum-prask,1,9
-r,kajon,400,bok-bok,2,5
-r,xylofon,800,tik-tak,1,37
-k,organ,5000,huuum,1,61
-k,klavir,4200,plink-plonk,1,88
-k,klavesy,2500,synth-wave,2,61
-
+r,bicie,1500.0,bum-prask,1,9
+r,kajon,400.0,bok-bok,2,5
+r,xylofon,800.0,tik-tak,1,37
+k,organ,5000.0,huuum,1,61
+k,klavir,4200.0,plink-plonk,1,88
+k,klavesy,2500.0,synth-wave,2,61

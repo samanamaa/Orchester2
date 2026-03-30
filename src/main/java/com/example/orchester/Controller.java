@@ -6,8 +6,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -16,6 +20,9 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -29,6 +36,8 @@ public class Controller implements Initializable {
     @FXML private TableColumn<Nastroj, String> colZvuk;
     @FXML private TableColumn<Nastroj, Integer> colPocetKlavesov;
     @FXML private TableColumn<Nastroj, Integer> colPocetZvukov;
+    @FXML private TableColumn<Nastroj, Void> colAkcie;
+    @FXML private TableColumn<Nastroj, Void> colAkcie1;
     @FXML
     private ListView<String> skladListView;
 
@@ -55,8 +64,124 @@ public class Controller implements Initializable {
         });
 
         table.setItems(nastroje);
+        nastavAkcneStlpce();
 
         nacitaj();
+    }
+
+    private void nastavAkcneStlpce() {
+        colAkcie.setCellFactory(column -> new TableCell<>() {
+            private final Button button = vytvorIkonoveTlacidlo("/deleteicon.png", "Delete");
+
+            {
+                button.setOnAction(event -> {
+                    Nastroj nastroj = getTableView().getItems().get(getIndex());
+                    nastroje.remove(nastroj);
+                });
+                setAlignment(Pos.CENTER);
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : button);
+            }
+        });
+
+        colAkcie1.setCellFactory(column -> new TableCell<>() {
+            private final Button button = vytvorIkonoveTlacidlo("/updateicon.png", "Update");
+
+            {
+                button.setOnAction(event -> {
+                    Nastroj nastroj = getTableView().getItems().get(getIndex());
+                    otvorFormular(nastroj);
+                });
+                setAlignment(Pos.CENTER);
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : button);
+            }
+        });
+    }
+
+    private Button vytvorIkonoveTlacidlo(String resourcePath, String fallbackText) {
+        Button button = new Button();
+        button.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+        button.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
+
+        InputStream stream = getClass().getResourceAsStream(resourcePath);
+        if (stream != null) {
+            ImageView imageView = new ImageView(new Image(stream));
+            imageView.setFitWidth(18);
+            imageView.setFitHeight(18);
+            imageView.setPreserveRatio(true);
+            button.setGraphic(imageView);
+        } else {
+            button.setText(fallbackText);
+            button.setContentDisplay(ContentDisplay.TEXT_ONLY);
+        }
+
+        return button;
+    }
+
+    private void otvorFormular(Nastroj povodny) {
+        Stage modal = new Stage();
+        modal.initModality(Modality.APPLICATION_MODAL);
+        modal.setTitle("Upraviť nástroj");
+
+        TextField tfNazov = new TextField(povodny.getNazov());
+        TextField tfCena = new TextField(String.valueOf(povodny.getCena()));
+        TextField tfPocet = new TextField(String.valueOf(povodny.getPocet()));
+        TextField tfZvuk = new TextField(povodny.getZvuk());
+        TextField tfPocetKlavesov = new TextField(
+                povodny instanceof KlavesovyNastroj
+                        ? String.valueOf(((KlavesovyNastroj) povodny).getPocetKlavesov())
+                        : ""
+        );
+        TextField tfPocetZvukov = new TextField(
+                povodny instanceof RytmickyNastroj
+                        ? String.valueOf(((RytmickyNastroj) povodny).getPocetZvukov())
+                        : ""
+        );
+
+        Button btnUlozit = new Button("Uložiť");
+        btnUlozit.setOnAction(e -> {
+            String nazov = tfNazov.getText();
+            double cena = Double.parseDouble(tfCena.getText());
+            int pocet = Integer.parseInt(tfPocet.getText());
+            String zvuk = tfZvuk.getText();
+            int pocetKlavesov = tfPocetKlavesov.getText().isBlank() ? 0 : Integer.parseInt(tfPocetKlavesov.getText());
+            int pocetZvukov = tfPocetZvukov.getText().isBlank() ? 0 : Integer.parseInt(tfPocetZvukov.getText());
+
+            Nastroj upraveny = pocetKlavesov > 0
+                    ? new KlavesovyNastroj(nazov, cena, zvuk, pocet, pocetKlavesov)
+                    : new RytmickyNastroj(nazov, cena, zvuk, pocet, pocetZvukov);
+
+            int index = nastroje.indexOf(povodny);
+            if (index >= 0) {
+                nastroje.set(index, upraveny);
+                table.refresh();
+            }
+            modal.close();
+        });
+
+        VBox layout = new VBox(10,
+                new Label("Názov:"), tfNazov,
+                new Label("Cena:"), tfCena,
+                new Label("Počet:"), tfPocet,
+                new Label("Zvuk:"), tfZvuk,
+                new Label("Počet klávesov:"), tfPocetKlavesov,
+                new Label("Počet zvukov:"), tfPocetZvukov,
+                new HBox(btnUlozit)
+        );
+        ((HBox) layout.getChildren().get(layout.getChildren().size() - 1)).setAlignment(Pos.CENTER_RIGHT);
+        layout.setStyle("-fx-padding: 10;");
+
+        modal.setScene(new Scene(layout));
+        modal.showAndWait();
     }
 
     @FXML
@@ -88,6 +213,37 @@ public class Controller implements Initializable {
             }
 
             br.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void uloz() {
+        try {
+            Path path = Path.of("src", "main", "resources", "orchester.txt");
+            StringBuilder obsah = new StringBuilder();
+
+            for (Nastroj nastroj : nastroje) {
+                if (nastroj instanceof RytmickyNastroj rytmickyNastroj) {
+                    obsah.append("r,")
+                            .append(rytmickyNastroj.getNazov()).append(",")
+                            .append(rytmickyNastroj.getCena()).append(",")
+                            .append(rytmickyNastroj.getZvuk()).append(",")
+                            .append(rytmickyNastroj.getPocet()).append(",")
+                            .append(rytmickyNastroj.getPocetZvukov());
+                } else if (nastroj instanceof KlavesovyNastroj klavesovyNastroj) {
+                    obsah.append("k,")
+                            .append(klavesovyNastroj.getNazov()).append(",")
+                            .append(klavesovyNastroj.getCena()).append(",")
+                            .append(klavesovyNastroj.getZvuk()).append(",")
+                            .append(klavesovyNastroj.getPocet()).append(",")
+                            .append(klavesovyNastroj.getPocetKlavesov());
+                }
+                obsah.append(System.lineSeparator());
+            }
+
+            Files.writeString(path, obsah.toString(), StandardCharsets.UTF_8);
         } catch (Exception e) {
             e.printStackTrace();
         }
